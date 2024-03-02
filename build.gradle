@@ -1,0 +1,75 @@
+buildscript {
+    ext.kotlinVersion = '1.9.21'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        google()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
+    }
+}
+
+plugins {
+    id "me.champeau.jmh" version "0.7.2"
+}
+
+allprojects {
+    apply plugin: "eclipse"
+
+    version = '1.0'
+    ext {
+        appName = "particlelife"
+        gdxVersion = '1.12.1'
+        roboVMVersion = '2.3.20'
+        box2DLightsVersion = '1.5'
+        ashleyVersion = '1.7.4'
+        aiVersion = '1.8.2'
+        gdxControllersVersion = '2.2.1'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://jitpack.io" }
+    }
+}
+
+project(":desktop") {
+    apply plugin: "kotlin"
+
+
+    dependencies {
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    }
+}
+
+project(":core") {
+    apply plugin: "kotlin"
+    apply plugin: "me.champeau.jmh"
+
+    dependencies {
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+        implementation 'io.kotest:kotest-runner-junit5:5.8.0'
+        implementation 'io.kotest:kotest-assertions-core:5.8.0'
+        implementation 'org.openjdk.jmh:jmh-core:1.36'
+        implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.36'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
