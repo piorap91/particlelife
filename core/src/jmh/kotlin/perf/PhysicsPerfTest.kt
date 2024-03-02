@@ -13,12 +13,7 @@ import org.openjdk.jmh.annotations.Warmup
 import org.openjdk.jmh.infra.Blackhole
 import pl.game.core.Changeables
 import pl.game.core.PhysicsEngineFactory
-import pl.game.core.PhysicsEngineParallelChunking
-import pl.game.core.PhysicsEngineParallel
-import pl.game.core.PhysicsEngineParallelChunkingCached
 import pl.game.core.PhysicsEngineSimpleV1
-import pl.game.core.PhysicsEngineSimpleV2
-import pl.game.core.PhysicsEngineSimpleV3
 import pl.game.core.Screen
 import java.util.concurrent.TimeUnit
 
@@ -37,17 +32,17 @@ open class PhysicsPerfTest {
         }
     }
 
-    val parallelChunking: PhysicsEngineParallelChunking = PhysicsEngineFactory.getSimplePC(Screen(500,500), Changeables())
-    val parallelChunkingCached: PhysicsEngineParallelChunkingCached = PhysicsEngineFactory.getSimplePCC(Screen(500,500), Changeables())
+//    val parallelChunking: PhysicsEngineParallelChunking = PhysicsEngineFactory.getSimplePC(Screen(500,500), Changeables())
+//    val parallelChunkingCached: PhysicsEngineParallelChunkingCached = PhysicsEngineFactory.getSimplePCC(Screen(500,500), Changeables())
     val simpleV1: PhysicsEngineSimpleV1 = PhysicsEngineFactory.getSimpleV1(Screen(500,500), Changeables())
-    val simpleV2: PhysicsEngineSimpleV2 = PhysicsEngineFactory.getSimpleV2(Screen(500,500), Changeables())
-    val simpleV3: PhysicsEngineSimpleV3 = PhysicsEngineFactory.getSimpleV3(Screen(500,500), Changeables())
-    val parallel: PhysicsEngineParallel = PhysicsEngineFactory.getParallel(Screen(500,500), Changeables())
+//    val simpleV2: PhysicsEngineSimpleV2 = PhysicsEngineFactory.getSimpleV2(Screen(500,500), Changeables())
+//    val simpleV3: PhysicsEngineSimpleV3 = PhysicsEngineFactory.getSimpleV3(Screen(500,500), Changeables())
+//    val parallel: PhysicsEngineParallel = PhysicsEngineFactory.getParallel(Screen(500,500), Changeables())
 
-//    @Benchmark
-//    fun simpleV1(blackhole: Blackhole) {
-//        simpleV1.updateAccelerationsForEach(0.1f)
-//    }
+    @Benchmark
+    fun simpleV1(blackhole: Blackhole) {
+        simpleV1.updateAccelerationsForEach(0.1f)
+    }
 //    @Benchmark
 //    fun simpleV2(blackhole: Blackhole) {
 //        simpleV2.updateAccelerationsForEach(0.1f)
@@ -61,14 +56,14 @@ open class PhysicsPerfTest {
 //        parallel.updateAccelerationsForEach(0.1f)
 //    }
 
-    @Benchmark
-    fun parallelChunking(blackhole: Blackhole) {
-        parallelChunking.updateAccelerationsChunking(0.1f)
-    }
-
-    @Benchmark
-    fun parallelChunkingCached(blackhole: Blackhole) {
-        parallelChunkingCached.updateAccelerationsChunking(0.1f)
-    }
+//    @Benchmark
+//    fun parallelChunking(blackhole: Blackhole) {
+//        parallelChunking.updateAccelerationsChunking(0.1f)
+//    }
+//
+//    @Benchmark
+//    fun parallelChunkingCached(blackhole: Blackhole) {
+//        parallelChunkingCached.updateAccelerationsChunking(0.1f)
+//    }
 }
 

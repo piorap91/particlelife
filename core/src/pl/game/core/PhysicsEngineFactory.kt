@@ -2,54 +2,11 @@ package pl.game.core
 
 object PhysicsEngineFactory {
 
-    fun getSimplePC(screen: Screen, changeables: Changeables): PhysicsEngineParallelChunking {
-
-        val (particleGroupsManager, attractionMatrix) = generateParticles(screen, changeables)
-
-        val attractionRules = AttractionRules(changeables.rMax, changeables.beta)
-        //todo check
-        val chunkManager = ChunkManager.forRmax(changeables.rMax.value, screen)
-        return PhysicsEngineParallelChunking(screen, particleGroupsManager, attractionMatrix, chunkManager, changeables, attractionRules.attract)
-    }
-
-    fun getSimplePCC(screen: Screen, changeables: Changeables): PhysicsEngineParallelChunkingCached {
-
-        val (particleGroupsManager, attractionMatrix) = generateParticles(screen, changeables)
-
-        val attractionRules = AttractionRules(changeables.rMax, changeables.beta)
-        //todo check
-        val chunkManager = ChunkManagerCached.forRmax(changeables.rMax.value, screen)
-        return PhysicsEngineParallelChunkingCached(screen, particleGroupsManager, attractionMatrix, chunkManager, changeables, attractionRules.attract)
-    }
-
     fun getSimpleV1(screen: Screen, changeables: Changeables): PhysicsEngineSimpleV1 {
 
         val (particleGroupsManager, attractionMatrix) = generateParticles(screen, changeables)
 
         return PhysicsEngineSimpleV1(screen, particleGroupsManager, attractionMatrix, changeables)
-    }
-
-    fun getSimpleV2(screen: Screen, changeables: Changeables): PhysicsEngineSimpleV2 {
-
-        val (particleGroupsManager, attractionMatrix) = generateParticles(screen, changeables)
-
-        return PhysicsEngineSimpleV2(screen, particleGroupsManager, attractionMatrix, changeables)
-    }
-
-    fun getSimpleV3(screen: Screen, changeables: Changeables): PhysicsEngineSimpleV3 {
-
-        val (particleGroupsManager, attractionMatrix) = generateParticles(screen, changeables)
-
-        val attractionRules = AttractionRules(changeables.rMax, changeables.beta)
-        return PhysicsEngineSimpleV3(screen, particleGroupsManager, attractionMatrix, changeables, attractionRules.attract)
-    }
-
-    fun getParallel(screen: Screen, changeables: Changeables): PhysicsEngineParallel {
-
-        val (particleGroupsManager, attractionMatrix) = generateParticles(screen, changeables)
-
-        val attractionRules = AttractionRules(changeables.rMax, changeables.beta)
-        return PhysicsEngineParallel(screen, particleGroupsManager, attractionMatrix, changeables, attractionRules.attract)
     }
 
     private fun generateParticles(

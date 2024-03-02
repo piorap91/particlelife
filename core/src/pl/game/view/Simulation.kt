@@ -76,7 +76,7 @@ class Simulation : ApplicationAdapter() {
 //        })
 
         screen = Screen(Gdx.graphics.width / 2, Gdx.graphics.height / 2)
-        physicsEngine = PhysicsEngineFactory.getSimplePCC(screen, changeables)
+        physicsEngine = PhysicsEngineFactory.getSimpleV1(screen, changeables)
     }
 
 
@@ -113,7 +113,7 @@ class Simulation : ApplicationAdapter() {
             val color = group.color
             shapeRenderer.setColor(color.red, color.green, color.blue, 1f)
             group.particles.forEach { particle ->
-                shapeRenderer.circle(particle.x + xShift, particle.y + yShift, 2f)
+                shapeRenderer.circle(particle.posVect.lane(0) + xShift, particle.posVect.lane(1) + yShift, 2f)
             }
         }
     }
@@ -136,7 +136,7 @@ class Simulation : ApplicationAdapter() {
         groups.forEach { group ->
             shapeRenderer.setColor(0.5f, 0.5f, 0.5f, 1f)
             group.particles.forEach { particle ->
-                shapeRenderer.circle(particle.x + xShift, particle.y + yShift, 2f)
+                shapeRenderer.circle(particle.posVect.lane(0) + xShift, particle.posVect.lane(1) + yShift, 2f)
             }
         }
     }

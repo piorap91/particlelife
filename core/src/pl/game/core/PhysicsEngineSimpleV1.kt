@@ -1,8 +1,10 @@
 package pl.game.core
 
+import jdk.incubator.vector.FloatVector
+import jdk.incubator.vector.VectorOperators
 import kotlin.math.abs
-import kotlin.math.hypot
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 class PhysicsEngineSimpleV1(
     val screen: Screen,
@@ -23,20 +25,16 @@ class PhysicsEngineSimpleV1(
             particleGroupsManager.particleGroups().forEach { group2 ->
                 val attraction = attractionMatrix.force(group1.id, group2.id)
                 group1.particles.map { particle1 ->
-                    var xForce = 0f
-                    var yForce = 0f
+                    var forceVect = FloatVector.zero(FloatVector.SPECIES_PREFERRED)
                     group2.particles.forEach { particle2 ->
-                        val rx = particle2.x - particle1.x
-                        val ry = particle2.y - particle1.y
-                        val r = hypot(rx, ry)
+                        val rVector = particle2.posVect.sub(particle1.posVect)
+                        val r = sqrt(rVector.pow(2f).reduceLanes(VectorOperators.ADD))
                         if (r > 0 && r < rMax) {
                             val force = force(r / rMax, attraction)
-                            xForce += (rx / r * force)
-                            yForce += (ry / r * force)
+                            forceVect = forceVect.add(rVector.div(r * force))
                         }
                     }
-                    particle1.xAcc = particle1.xAcc * friction + xForce * rMax * deltaTime
-                    particle1.yAcc =  particle1.yAcc * friction + yForce * rMax * deltaTime
+                    particle1.accVect = particle1.accVect.mul(friction).add(forceVect.mul(rMax * deltaTime))
                 }
             }
         }
@@ -45,7 +43,13 @@ class PhysicsEngineSimpleV1(
     fun updatePositions(deltaTime: Float) {
         particleGroupsManager.particleGroups().forEach { group ->
             group.particles.forEach { particle ->
-                particle.move(deltaTime, screen)
+                particle.posVect =
+                    particle.posVect.add(particle.accVect.mul(deltaTime)).toArray().apply {
+                        this[0].mod(screen.width.toFloat())
+                        this[1].mod(screen.height.toFloat())
+                    }.let {
+                        FloatVector.fromArray(FloatVector.SPECIES_PREFERRED, it, 0)
+                    }
             }
         }
     }

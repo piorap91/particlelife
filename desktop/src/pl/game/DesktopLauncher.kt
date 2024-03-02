@@ -18,6 +18,7 @@ import pl.game.view.Simulation
  *  % vs mod
  *  perf tests
  *  window dragging
+ *  FloatVector
  */
 
 fun main() {
